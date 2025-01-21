@@ -1,0 +1,21 @@
+SELECT A.BOOK_CODE,REGISTER,JURNAL,NVL(A.REGISTER,0)-NVL(B.JURNAL,0)
+FROM 
+(SELECT  book_code,SUM(NVL(COLL_NET_BILL_AMT,0)+NVL(COLL_REBATE_CHRG,0)+NVL(COLL_SUBSIDY_AMT,0))REGISTER
+FROM TBL_BILL_COLLECTION_HDR
+WHERE coll_bill_period=:pCOLL_BILL_PERIOD
+GROUP BY book_code)A,
+ (
+SELECT book_code,SUM(NVL(coll_NET_BILL_AMT,0)+NVL(COLL_REBATE_CHRG,0)+NVL(COLL_SUBSIDY_AMT,0))JURNAL
+FROM TBL_MONTH_SUMMARY
+WHERE bill_period=:pBILL_PERIOD
+GROUP BY book_code)B
+WHERE A.BOOK_CODE=B.BOOK_CODE(+)
+AND NVL(A.REGISTER,0)-NVL(B.JURNAL,0)<>0
+
+===============================diff finding=================================
+
+SELECT * FROM tbl_customer_misc_info WHERE cust_misc_id IN
+(SELECT mid FROM
+(SELECT cust_id, COUNT(cust_id), MAX(CUST_MISC_ID) AS mid FROM tbl_customer_misc_info GROUP BY cust_id HAVING COUNT(cust_id)>1))
+
+

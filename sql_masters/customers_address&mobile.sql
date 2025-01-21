@@ -1,0 +1,12 @@
+UPDATE tbl_bill SET CUSTOMER_ADDR_B=' ' 
+WHERE bill_period> 202401 
+AND book_code=815 AND account_num=2615 AND CUSTOMER_ADDR_B IS NULL;
+COMMIT;
+
+UPDATE tbl_customer_interface SET CUSTOMER_ADDR_B=' ' 
+WHERE book_code=815 AND account_num=2615 AND CUSTOMER_ADDR_B IS NULL;
+COMMIT; 
+
+
+UPDATE TBL_CUSTOMER_MBR_SHIP C SET C.ms_phone=(SELECT MOBILE_NO_1 FROM TBL_CUSTOMER_MISC_INFO T
+WHERE C.cust_id=T.cust_id) WHERE (C.ms_phone IS NULL OR C.ms_phone = '');

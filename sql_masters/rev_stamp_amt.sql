@@ -1,0 +1,13 @@
+UPDATE IEBMS.TBL_BILL_COLLECTION_HDR SET is_revenue = 0, coll_revenue_stamp = 0
+WHERE coll_BILL_PERIOD=........; --if collection then coll_bill_period / or coll_date
+COMMIT;
+
+UPDATE IEBMS.TBL_BILL_COLLECTION_HDR SET IS_REVENUE=1, COLL_REVENUE_STAMP = 10 WHERE BILL_NUM IN
+(SELECT MBILL FROM
+(SELECT coll_date, point_code, scroll_num, COUNT (*) AS nr, SUM(COLL_TOTAL_BILL_AMT) AS TOTAL_COLL, MAX(BILL_NUM) AS MBILL
+    FROM IEBMS.TBL_BILL_COLLECTION_HDR
+   WHERE point_code NOT IN (SELECT DNP_POINT AS point_code FROM IEBMS.TBL_OFFICE WHERE STATUS='A')
+     AND coll_BILL_PERIOD=.............
+GROUP BY coll_date, point_code, scroll_num
+  HAVING SUM(COLL_TOTAL_BILL_AMT)>=500));
+COMMIT;
