@@ -27,5 +27,5 @@ UPDATE tbl_bill_collection_hdr SET MISC_code= trim(both ' ' FROM MISC_code)
  WHERE coll_bill_period=202401   --AND MISC_CODE= NULL
  
   SELECT * FROM tbl_bill 
- WHERE bill_period=202401  AND NVL(meter_num,'null')= NULL
+ WHERE bill_period=202401  AND NVL(meter_num,'null')= NULL
 
